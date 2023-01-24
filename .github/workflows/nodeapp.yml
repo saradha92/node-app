@@ -19,9 +19,11 @@ jobs:
             echo "successfully removed container"
       - name: Build new image
         run: |
+            cd && cd node-app
             docker build -t node-app .
             echo "successfully created image"
       - name: Create a container
         run: |
+            cd && cd node-app
             docker run -d --name nodeapp -p 3000:3000 node-app
             echo "successfully created container"
