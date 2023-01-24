@@ -1,0 +1,29 @@
+name: node-app
+on:
+  push:
+    branches:
+      - master
+jobs:
+  build:
+    runs-on: [ self-hosted, linux, x64]
+    steps:  
+      - name: remove the container hosted on port 3000
+        run: |
+            cd
+            cd node-app
+            PORT=3000
+            id=`docker container ls --format="{{.ID}}\t{{.Ports}}" | grep $PORT | awk '{print $1}'`
+            docker stop $id 
+            docker rm $id
+            docker rmi node-app
+            echo "successfully removed container"
+      - name: Build new image
+        run: |
+            cd && cd node-app
+            docker build -t node-app .
+            echo "successfully created image"
+      - name: Create a container
+        run: |
+            cd && cd node-app
+            docker run -d --name nodeapp -p 3000:3000 node-app
+            echo "successfully created container"
