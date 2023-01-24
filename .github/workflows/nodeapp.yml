@@ -10,7 +10,7 @@ jobs:
       - name: remove the container hosted on port 3000
         run: |
             cd
-            cd docker/node-app
+            cd node-app
             PORT=3000
             id=`docker container ls --format="{{.ID}}\t{{.Ports}}" | grep $PORT | awk '{print $1}'`
             docker stop $id 
@@ -19,12 +19,9 @@ jobs:
             echo "successfully removed container"
       - name: Build new image
         run: |
-            cd docker/node-app
             docker build -t node-app .
             echo "successfully created image"
       - name: Create a container
         run: |
-              cd
-              cd docker/node-app
-              docker run -d --name nodeapp -p 3000:3000 node-app
-              echo "successfully created container"
+            docker run -d --name nodeapp -p 3000:3000 node-app
+            echo "successfully created container"
