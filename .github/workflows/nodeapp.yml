@@ -9,11 +9,12 @@ jobs:
     steps:  
       - name: remove the container hosted on port 3000
         run: |
+            cd
             cd docker/node-app
             PORT=3000
             id=`docker container ls --format="{{.ID}}\t{{.Ports}}" | grep $PORT | awk '{print $1}'`
-            docker stop $id q
-            docker rm $ida
+            docker stop $id 
+            docker rm $id
             docker rmi node-app
             echo "successfully removed container"
       - name: Build new image
